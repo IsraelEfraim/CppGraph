@@ -6,9 +6,9 @@
 
 void printGraphInformation(Graph* g)
 {
-    std::cout << "Type: " << g->getType() << std::endl
-              << "Oriented: " << g->isOriented() << std::endl
-              << "Weighted: " << g->isWeighted() << std::endl;
+    std::cout << "Type:     " << g->getTypeName() << std::endl
+              << "Oriented: " << g->isOriented()  << std::endl
+              << "Weighted: " << g->isWeighted()  << std::endl;
 }
 
 int main()
