@@ -28,7 +28,7 @@ std::string MatrixGraph::getTypeName()
     return std::string("Matrix");
 }
 
-void MatrixGraph::printToStream(const std::ostream &stream)
+void MatrixGraph::printToStream(std::ostream &stream)
 {
 
 }

@@ -15,7 +15,7 @@ class MatrixGraph : public Graph
         std::vector<int> getNeighbors(int edgeIndex);
 
         std::string getTypeName();
-        void printToStream(const std::ostream &stream);
+        void printToStream(std::ostream &stream);
 };
 
 #endif // MATRIXGRAPH_HPP

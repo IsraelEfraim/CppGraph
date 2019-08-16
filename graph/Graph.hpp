@@ -1,6 +1,7 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -27,7 +28,7 @@ class Graph
         std::vector<std::string> getLabelVector();
 
         virtual std::string getTypeName() = 0;
-        virtual void printToStream(const std::ostream &stream) = 0;
+        virtual void printToStream(std::ostream &stream) = 0;
 
         virtual ~Graph() = 0;
 };
