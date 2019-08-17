@@ -13,6 +13,16 @@ bool Graph::isWeighted()
     return this->weighted;
 }
 
+int Graph::getNodeIndex(std::string nodeName)
+{
+    for (size_t i = 0; i < this->labels.size(); i++) {
+        if (this->labels.at(i) == nodeName) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}
+
 std::string Graph::getNodeName(int nodeIndex)
 {
     return this->labels.at(static_cast<size_t>(nodeIndex));

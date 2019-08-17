@@ -13,6 +13,11 @@ bool MatrixGraph::addEdge(int from, int to, double weight)
     return true;
 }
 
+bool MatrixGraph::addEdge(std::string edge, double weight)
+{
+    return true;
+}
+
 double MatrixGraph::getEdgeWeight(int from, int to)
 {
     return 0.0;

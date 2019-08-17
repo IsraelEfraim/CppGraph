@@ -17,6 +17,7 @@ class Graph
 
         virtual bool addNode(std::string label) = 0;
         virtual bool addEdge(int from, int to, double weight = 1) = 0;
+        virtual bool addEdge(std::string edge, double weight = 1) = 0;
 
         virtual double getEdgeWeight(int from, int to) = 0;
         virtual std::vector<int> getNeighbors(int edgeIndex) = 0;
@@ -24,6 +25,7 @@ class Graph
         bool isOriented();
         bool isWeighted();
 
+        int getNodeIndex(std::string nodeName);
         std::string getNodeName(int nodeIndex);
         std::vector<std::string> getLabelVector();
 

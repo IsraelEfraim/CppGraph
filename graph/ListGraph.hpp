@@ -26,6 +26,7 @@ class ListGraph : public Graph
 
         bool addNode(std::string label);
         bool addEdge(int from, int to, double weight = 1);
+        bool addEdge(std::string edge, double weight = 1);
 
         double getEdgeWeight(int from, int to);
         std::vector<int> getNeighbors(int edgeIndex);

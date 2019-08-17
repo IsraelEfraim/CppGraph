@@ -34,6 +34,19 @@ bool ListGraph::addEdge(int from, int to, double weight)
     return false;
 }
 
+bool ListGraph::addEdge(std::string edge, double weight)
+{
+    size_t split = edge.find("-");
+
+    if (split != std::string::npos) {
+        int from = this->getNodeIndex(edge.substr(0, split));
+        int to = this->getNodeIndex(edge.substr(split + 1));
+        return this->addEdge(from, to, weight);
+    }
+
+    return false;
+}
+
 double ListGraph::getEdgeWeight(int from, int to)
 {
     double weight = 0.0;
