@@ -3,11 +3,6 @@
 ListGraph::ListGraph(bool oriented, bool weighted)
     : Graph(oriented, weighted), adjacencyList(std::vector<std::vector<AdjacencyCell>>()) {}
 
-bool ListGraph::nodeExists(int index)
-{
-    return (index >= 0 && index < this->adjacencyList.size());
-}
-
 bool ListGraph::addNode(std::string label)
 {
     this->labels.push_back(label);
@@ -15,7 +10,7 @@ bool ListGraph::addNode(std::string label)
     return true;
 }
 
-bool ListGraph::addEdge(int from, int to, double weight)
+bool ListGraph::addEdge(size_t from, size_t to, double weight)
 {
     if (!weighted) {
         weight = 1.0;
@@ -34,26 +29,12 @@ bool ListGraph::addEdge(int from, int to, double weight)
     return false;
 }
 
-bool ListGraph::addEdge(std::string edge, double weight)
-{
-    size_t split = edge.find("-");
 
-    if (split != std::string::npos) {
-        int from = this->getNodeIndex(edge.substr(0, split));
-        int to = this->getNodeIndex(edge.substr(split + 1));
-        return this->addEdge(from, to, weight);
-    }
-
-    return false;
-}
-
-double ListGraph::getEdgeWeight(int from, int to)
+double ListGraph::getEdgeWeight(size_t from, size_t to)
 {
     double weight = 0.0;
 
-    bool selfLoop = oriented || (!oriented && from != to);
-
-    if (selfLoop && this->nodeExists(from) && this->nodeExists(to)) {
+    if (this->nodeExists(from) && this->nodeExists(to)) {
         for (auto it: this->adjacencyList.at(from)) {
             if (it.index == to) {
                 weight = it.weight;
@@ -65,9 +46,17 @@ double ListGraph::getEdgeWeight(int from, int to)
     return weight;
 }
 
-std::vector<int> ListGraph::getNeighbors(int edgeIndex)
+std::vector<size_t> ListGraph::getNeighbors(size_t edgeIndex)
 {
-    return std::vector<int>();
+    std::vector<size_t> neighbors;
+
+    if (this->nodeExists(edgeIndex)) {
+        for (AdjacencyCell it : adjacencyList.at(edgeIndex)) {
+            neighbors.push_back(it.index);
+        }
+    }
+
+    return neighbors;
 }
 
 std::string ListGraph::getTypeName()

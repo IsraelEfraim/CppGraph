@@ -5,15 +5,17 @@
 
 class MatrixGraph : public Graph
 {
+    protected:
+        std::vector<std::vector<double>> adjacencyMatrix;
+
     public:
         MatrixGraph(bool oriented, bool weighted);
 
         bool addNode(std::string label);
-        bool addEdge(int from, int to, double weight = 1);
-        bool addEdge(std::string edge, double weight = 1);
+        bool addEdge(size_t from, size_t to, double weight = 1);
 
-        double getEdgeWeight(int from, int to);
-        std::vector<int> getNeighbors(int edgeIndex);
+        double getEdgeWeight(size_t from, size_t to);
+        std::vector<size_t> getNeighbors(size_t edgeIndex);
 
         std::string getTypeName();
         void printToStream(std::ostream &stream);
