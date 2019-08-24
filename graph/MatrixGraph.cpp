@@ -67,13 +67,13 @@ void MatrixGraph::printToStream(std::ostream &stream)
 {
     stream << "\t";
     for (size_t i = 0; i < this->adjacencyMatrix.size(); i++) {
-        stream << i + 1 << "\t";
+        stream << this->labels.at(i) << "\t";
     }
 
     stream << std::endl;
 
     for (size_t i = 0; i < this->adjacencyMatrix.size(); i++) {
-        stream << i + 1 << "\t";
+        stream << this->labels.at(i) << "\t";
         for (size_t j = 0; j < this->adjacencyMatrix.at(i).size(); j++) {
             stream << this->adjacencyMatrix.at(i).at(j) << "\t";
         }

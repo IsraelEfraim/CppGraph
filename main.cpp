@@ -4,6 +4,8 @@
 #include "graph/MatrixGraph.hpp"
 #include "graph/ListGraph.hpp"
 
+#include <algorithm>
+
 void printGraphInformation(Graph* g)
 {
     std::cout << "Type:     " << g->getTypeName() << std::endl
@@ -61,10 +63,66 @@ void listExample ()
     delete g;
 }
 
+void depthFirstSearch()
+{
+    Graph* g = new ListGraph(false, false);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+    g->addNode("F");
+
+    g->addEdge("A-B");
+    g->addEdge("A-C");
+    g->addEdge("A-D");
+    g->addEdge("B-D");
+    g->addEdge("C-E");
+    g->addEdge("C-F");
+    g->addEdge("E-F");
+
+    auto sequence = g->depthFirstSearch(0);
+    for (size_t i = 0; i < sequence.size(); i++) {
+        std::cout << g->getNodeName(sequence.at(i)) << ", ";
+    }
+
+    std::cout << std::endl;
+}
+
+void breadthFirstSearch()
+{
+    Graph* g = new ListGraph(false, false);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+    g->addNode("F");
+
+    g->addEdge("A-B");
+    g->addEdge("A-C");
+    g->addEdge("A-D");
+    g->addEdge("B-D");
+    g->addEdge("C-E");
+    g->addEdge("C-F");
+    g->addEdge("E-F");
+
+    auto sequence = g->breadthFirstSearch(0);
+    for (size_t i = 0; i < sequence.size(); i++) {
+        std::cout << g->getNodeName(sequence.at(i)) << ", ";
+    }
+
+    std::cout << std::endl;
+}
+
 int main()
 {
     //listExample();
     //matrixExample();
-
+    depthFirstSearch();
+    //breadthFirstSearch();
+    //dijkstra();
     return 0;
 }

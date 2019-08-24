@@ -1,17 +1,9 @@
 #include "Graph.hpp"
+#include <stack>
+#include <queue>
 
 Graph::Graph(bool oriented, bool weighted)
     : labels(std::vector<std::string>()), oriented(oriented), weighted(weighted) {}
-
-bool Graph::isOriented()
-{
-    return this->oriented;
-}
-
-bool Graph::isWeighted()
-{
-    return this->weighted;
-}
 
 bool Graph::nodeExists(size_t index)
 {
@@ -39,6 +31,84 @@ size_t Graph::getNodeIndex(std::string nodeName)
         }
     }
     return static_cast<size_t>(-1);
+}
+
+std::vector<int> Graph::depthFirstSearch(int base)
+{
+    std::vector<int> sequence;
+
+    std::vector<int> visited(this->labels.size(), 0);
+    int visitCount = 0;
+
+    std::stack<int> stack;
+    stack.push(base);
+
+    while (!stack.empty()) {
+        int node = stack.top();
+
+        if (visited.at(node) == 0) {
+            sequence.push_back(node);
+            visited.at(node) = ++visitCount;
+        }
+
+        auto neighbors = this->getNeighbors(node);
+        size_t visitedNeighbors = 0;
+
+        for (size_t i = 0; i < neighbors.size(); i++) {
+            if (visited.at(neighbors.at(i)) == 0) {
+                stack.push(neighbors.at(i));
+                break;
+            }
+            visitedNeighbors++;
+        }
+
+        if (visitedNeighbors == neighbors.size())
+            stack.pop();
+    }
+
+    return sequence;
+}
+
+std::vector<int> Graph::breadthFirstSearch(int base)
+{
+    std::vector<int> sequence;
+
+    std::vector<int> visited(this->labels.size(), 0);
+    int visitCount = 0;
+
+    std::queue<int> queue;
+    queue.push(base);
+
+    while (!queue.empty()) {
+        int node = queue.front();
+
+        if (visited.at(node) == 0) {
+            sequence.push_back(node);
+            visited.at(node) = ++visitCount;
+        }
+
+        auto neighbors = this->getNeighbors(node);
+
+        for (size_t i = 0; i < neighbors.size(); i++) {
+            if (visited.at(neighbors.at(i)) == 0) {
+                queue.push(neighbors.at(i));
+            }
+        }
+
+        queue.pop();
+    }
+
+    return sequence;
+}
+
+bool Graph::isOriented()
+{
+    return this->oriented;
+}
+
+bool Graph::isWeighted()
+{
+    return this->weighted;
 }
 
 std::string Graph::getNodeName(size_t nodeIndex)

@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+
 class Graph
 {
     protected:
@@ -23,6 +24,9 @@ class Graph
 
         virtual double getEdgeWeight(size_t from, size_t to) = 0;
         virtual std::vector<size_t> getNeighbors(size_t edgeIndex) = 0;
+
+        std::vector<int> depthFirstSearch(int base);
+        std::vector<int> breadthFirstSearch(int base);
 
         bool isOriented();
         bool isWeighted();
