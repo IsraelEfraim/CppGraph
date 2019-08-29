@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include <limits>
+
 void printGraphInformation(Graph* g)
 {
     std::cout << "Type:     " << g->getTypeName() << std::endl
@@ -117,12 +119,42 @@ void breadthFirstSearch()
     std::cout << std::endl;
 }
 
+void dijkstra()
+{
+    Graph* g = new ListGraph(false, true);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+
+    g->addEdge("A-B", 3);
+    g->addEdge("A-C", 5);
+    g->addEdge("A-D", 6);
+    g->addEdge("A-E", 8);
+    g->addEdge("B-D", 2);
+    g->addEdge("B-E", 11);
+    g->addEdge("C-E", 2);
+
+    g->printToStream(std::cout);
+
+    auto dijkstraMap = g->dijkstra(0);
+    for (size_t i = 0; i < dijkstraMap.size(); i++) {
+        std::cout << "["  << g->getNodeName(i)
+                  << ", " << dijkstraMap.at(i).distance
+                  << ", " << g->getNodeName(dijkstraMap.at(i).predecessor)
+                  << ", " << dijkstraMap.at(i).closed
+                  << "] " << std::endl;
+    }
+}
+
 int main()
 {
     //listExample();
     //matrixExample();
-    depthFirstSearch();
+    //depthFirstSearch();
     //breadthFirstSearch();
-    //dijkstra();
+    dijkstra();
     return 0;
 }

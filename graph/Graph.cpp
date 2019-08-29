@@ -1,4 +1,6 @@
 #include "Graph.hpp"
+#include <algorithm>
+#include <limits>
 #include <stack>
 #include <queue>
 
@@ -33,18 +35,18 @@ size_t Graph::getNodeIndex(std::string nodeName)
     return static_cast<size_t>(-1);
 }
 
-std::vector<int> Graph::depthFirstSearch(int base)
+std::vector<size_t> Graph::depthFirstSearch(size_t base)
 {
-    std::vector<int> sequence;
+    std::vector<size_t> sequence;
 
-    std::vector<int> visited(this->labels.size(), 0);
-    int visitCount = 0;
+    std::vector<size_t> visited(this->labels.size(), 0);
+    unsigned int visitCount = 0;
 
-    std::stack<int> stack;
+    std::stack<size_t> stack;
     stack.push(base);
 
     while (!stack.empty()) {
-        int node = stack.top();
+        size_t node = stack.top();
 
         if (visited.at(node) == 0) {
             sequence.push_back(node);
@@ -69,18 +71,18 @@ std::vector<int> Graph::depthFirstSearch(int base)
     return sequence;
 }
 
-std::vector<int> Graph::breadthFirstSearch(int base)
+std::vector<size_t> Graph::breadthFirstSearch(size_t base)
 {
-    std::vector<int> sequence;
+    std::vector<size_t> sequence;
 
-    std::vector<int> visited(this->labels.size(), 0);
-    int visitCount = 0;
+    std::vector<size_t> visited(this->labels.size(), 0);
+    unsigned visitCount = 0;
 
-    std::queue<int> queue;
+    std::queue<size_t> queue;
     queue.push(base);
 
     while (!queue.empty()) {
-        int node = queue.front();
+        size_t node = queue.front();
 
         if (visited.at(node) == 0) {
             sequence.push_back(node);
@@ -99,6 +101,49 @@ std::vector<int> Graph::breadthFirstSearch(int base)
     }
 
     return sequence;
+}
+
+std::vector<DijkstraCell> Graph::dijkstra(size_t base)
+{
+    std::vector<DijkstraCell> distanceMap(this->labels.size(),
+                                          DijkstraCell(std::numeric_limits<double>::max(), 0, false));
+
+    if (this->nodeExists(base)) {
+        size_t node = base;
+        distanceMap.at(node).distance = 0.0;
+
+        bool shouldLoop = true;
+        while (shouldLoop) {
+            auto neighbors = this->getNeighbors(node);
+
+            for (auto neighbor : neighbors) {
+                double distance = distanceMap.at(node).distance + this->getEdgeWeight(node, neighbor);
+
+                if (distance < distanceMap.at(neighbor).distance) {
+                    distanceMap.at(neighbor).distance = distance;
+                    distanceMap.at(neighbor).predecessor = node;
+                }
+            }
+
+            distanceMap.at(node).closed = true;
+            shouldLoop = false;
+
+            double smallerDistance = std::numeric_limits<double>::max();
+
+            for (size_t i = 0; i < distanceMap.size(); i++) {
+                if (!distanceMap.at(i).closed && distanceMap.at(i).distance < std::numeric_limits<double>::max()) {
+                    shouldLoop = true;
+
+                    if (distanceMap.at(i).distance < smallerDistance) {
+                        node = i;
+                        smallerDistance = distanceMap.at(i).distance;
+                    }
+                }
+            }
+        }
+    }
+
+    return distanceMap;
 }
 
 bool Graph::isOriented()

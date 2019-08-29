@@ -5,6 +5,18 @@
 #include <vector>
 #include <string>
 
+class DijkstraCell
+{
+    public:
+        double distance;
+        size_t predecessor;
+        bool closed;
+
+        DijkstraCell(double distance, size_t predecessor, bool closed)
+            : distance(distance), predecessor(predecessor), closed(closed)
+        {}
+};
+
 
 class Graph
 {
@@ -25,8 +37,9 @@ class Graph
         virtual double getEdgeWeight(size_t from, size_t to) = 0;
         virtual std::vector<size_t> getNeighbors(size_t edgeIndex) = 0;
 
-        std::vector<int> depthFirstSearch(int base);
-        std::vector<int> breadthFirstSearch(int base);
+        std::vector<size_t> depthFirstSearch(size_t base);
+        std::vector<size_t> breadthFirstSearch(size_t base);
+        std::vector<DijkstraCell> dijkstra(size_t base);
 
         bool isOriented();
         bool isWeighted();
