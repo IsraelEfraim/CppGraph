@@ -18,12 +18,14 @@ bool ListGraph::addEdge(size_t from, size_t to, double weight)
 
     bool selfLoop = oriented || (!oriented && from != to);
 
-    if (selfLoop && this->nodeExists(from) && this->nodeExists(to)) {
-        this->adjacencyList.at(from).push_back(AdjacencyCell(to, this->getNodeName(to), weight));
-        if (!oriented) {
-            this->adjacencyList.at(to).push_back(AdjacencyCell(from, this->getNodeName(from), weight));
+    if (this->getEdgeWeight(from, to) == 0.0) {
+        if (selfLoop && this->nodeExists(from) && this->nodeExists(to)) {
+            this->adjacencyList.at(from).push_back(AdjacencyCell(to, this->getNodeName(to), weight));
+            if (!oriented) {
+                this->adjacencyList.at(to).push_back(AdjacencyCell(from, this->getNodeName(from), weight));
+            }
+            return true;
         }
-        return true;
     }
 
     return false;

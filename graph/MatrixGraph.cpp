@@ -23,13 +23,16 @@ bool MatrixGraph::addEdge(size_t from, size_t to, double weight)
 
     bool selfLoop = this->isOriented() || (!this->isOriented() && from != to);
 
-    if (selfLoop && this->nodeExists(from) && this->nodeExists(to)) {
-        this->adjacencyMatrix.at(from).at(to) = weight;
-        if (!this->isOriented()) {
-            this->adjacencyMatrix.at(to).at(from) = weight;
+    if (this->getEdgeWeight(from, to) == 0.0) {
+        if (selfLoop && this->nodeExists(from) && this->nodeExists(to)) {
+            this->adjacencyMatrix.at(from).at(to) = weight;
+            if (!this->isOriented()) {
+                this->adjacencyMatrix.at(to).at(from) = weight;
+            }
+            return true;
         }
-        return true;
     }
+
 
     return false;
 }
