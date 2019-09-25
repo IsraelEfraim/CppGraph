@@ -30,28 +30,30 @@ class Graph
     public:
         Graph(bool oriented, bool weighted);
 
-        virtual bool addNode(std::string label) = 0;
-        virtual bool addEdge(size_t from, size_t to, double weight = 1) = 0;
-        bool addEdge(std::string edge, double weight = 1);
+        virtual auto addNode(std::string label) -> bool = 0;
+        virtual auto addEdge(size_t from, size_t to, double weight = 1) -> bool = 0;
+        auto addEdge(std::string edge, double weight = 1) -> bool;
 
-        virtual double getEdgeWeight(size_t from, size_t to) = 0;
-        virtual std::vector<size_t> getNeighbors(size_t edgeIndex) = 0;
+        virtual auto getEdgeWeight(size_t from, size_t to) -> double = 0;
+        virtual auto getNeighbors(size_t edgeIndex) -> std::vector<size_t> = 0;
 
-        std::vector<size_t> depthFirstSearch(size_t base);
-        std::vector<size_t> breadthFirstSearch(size_t base);
-        std::vector<DijkstraCell> dijkstra(size_t base);
+        auto depthFirstSearch(size_t base) -> std::vector<size_t>;
+        auto breadthFirstSearch(size_t base) -> std::vector<size_t>;
+        auto dijkstra(size_t base) -> std::vector<DijkstraCell>;
 
-        bool isOriented();
-        bool isWeighted();
+        auto isOriented() -> bool;
+        auto isWeighted() -> bool;
 
-        size_t getNodeIndex(std::string nodeName);
-        std::string getNodeName(size_t nodeIndex);
-        std::vector<std::string> getLabelVector();
+        auto getNodeIndex(std::string nodeName) -> size_t;
+        auto getNodeName(size_t nodeIndex) -> std::string;
+        auto getLabelVector() -> std::vector<std::string>;
 
-        virtual std::string getTypeName() = 0;
-        virtual void printToStream(std::ostream &stream) = 0;
+        virtual auto getTypeName() -> std::string = 0;
+        virtual auto printToStream(std::ostream &stream) -> void = 0;
 
         virtual ~Graph() = 0;
 };
+
+auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph*;
 
 #endif // GRAPH_HPP

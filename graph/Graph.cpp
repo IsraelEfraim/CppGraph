@@ -7,13 +7,11 @@
 Graph::Graph(bool oriented, bool weighted)
     : labels(std::vector<std::string>()), oriented(oriented), weighted(weighted) {}
 
-bool Graph::nodeExists(size_t index)
-{
+auto Graph::nodeExists(size_t index) -> bool {
     return (index < this->labels.size());
 }
 
-bool Graph::addEdge(std::string edge, double weight)
-{
+auto Graph::addEdge(std::string edge, double weight) -> bool {
     size_t split = edge.find("-");
 
     if (split != std::string::npos) {
@@ -25,8 +23,7 @@ bool Graph::addEdge(std::string edge, double weight)
     return false;
 }
 
-size_t Graph::getNodeIndex(std::string nodeName)
-{
+auto Graph::getNodeIndex(std::string nodeName) -> size_t {
     for (size_t i = 0; i < this->labels.size(); i++) {
         if (this->labels.at(i) == nodeName) {
             return i;
@@ -35,8 +32,7 @@ size_t Graph::getNodeIndex(std::string nodeName)
     return static_cast<size_t>(-1);
 }
 
-std::vector<size_t> Graph::depthFirstSearch(size_t base)
-{
+auto Graph::depthFirstSearch(size_t base) -> std::vector<size_t> {
     std::vector<size_t> sequence;
 
     std::vector<size_t> visited(this->labels.size(), 0);
@@ -71,8 +67,7 @@ std::vector<size_t> Graph::depthFirstSearch(size_t base)
     return sequence;
 }
 
-std::vector<size_t> Graph::breadthFirstSearch(size_t base)
-{
+auto Graph::breadthFirstSearch(size_t base) -> std::vector<size_t> {
     std::vector<size_t> sequence;
 
     std::vector<size_t> visited(this->labels.size(), 0);
@@ -103,8 +98,7 @@ std::vector<size_t> Graph::breadthFirstSearch(size_t base)
     return sequence;
 }
 
-std::vector<DijkstraCell> Graph::dijkstra(size_t base)
-{
+auto Graph::dijkstra(size_t base) -> std::vector<DijkstraCell> {
     std::vector<DijkstraCell> distanceMap(this->labels.size(),
                                           DijkstraCell(std::numeric_limits<double>::max(), 0, false));
 
@@ -146,24 +140,37 @@ std::vector<DijkstraCell> Graph::dijkstra(size_t base)
     return distanceMap;
 }
 
-bool Graph::isOriented()
-{
+auto Graph::isOriented() -> bool {
     return this->oriented;
 }
 
-bool Graph::isWeighted()
-{
+auto Graph::isWeighted() -> bool {
     return this->weighted;
 }
 
-std::string Graph::getNodeName(size_t nodeIndex)
-{
+auto Graph::getNodeName(size_t nodeIndex) -> std::string {
     return this->labels.at(nodeIndex);
 }
 
-std::vector<std::string> Graph::getLabelVector()
-{
+auto Graph::getLabelVector() -> std::vector<std::string> {
     return this->labels;
 }
 
 Graph::~Graph() = default;
+
+auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph* {
+    size_t remainingNodes = numNodes,
+           remainingEdges = numEdges;
+
+    while (stream.good() && remainingNodes > 0) {
+       std::string node;
+       stream >> node;
+
+       if (stream.good()) {
+           g->addNode(node);
+           remainingNodes--;
+       }
+    }
+
+    return g;
+}
