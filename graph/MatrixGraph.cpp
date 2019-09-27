@@ -3,8 +3,7 @@
 MatrixGraph::MatrixGraph(bool oriented, bool weighted)
     : Graph(oriented, weighted), adjacencyMatrix(std::vector<std::vector<double>>()) {}
 
-bool MatrixGraph::addNode(std::string label)
-{
+auto MatrixGraph::addNode(std::string label) -> bool {
     this->labels.push_back(label);
     this->adjacencyMatrix.push_back(std::vector<double>(this->adjacencyMatrix.size() + 1, 0.0));
 
@@ -15,8 +14,7 @@ bool MatrixGraph::addNode(std::string label)
     return true;
 }
 
-bool MatrixGraph::addEdge(size_t from, size_t to, double weight)
-{
+auto MatrixGraph::addEdge(size_t from, size_t to, double weight) -> bool {
     if (!this->isWeighted()) {
         weight = 1.0;
     }
@@ -37,8 +35,7 @@ bool MatrixGraph::addEdge(size_t from, size_t to, double weight)
     return false;
 }
 
-double MatrixGraph::getEdgeWeight(size_t from, size_t to)
-{
+auto MatrixGraph::getEdgeWeight(size_t from, size_t to) -> double {
     if (this->nodeExists(from) && this->nodeExists(to)) {
         return this->adjacencyMatrix.at(from).at(to);
     }
@@ -46,8 +43,7 @@ double MatrixGraph::getEdgeWeight(size_t from, size_t to)
     return 0.0;
 }
 
-std::vector<size_t> MatrixGraph::getNeighbors(size_t edgeIndex)
-{
+auto MatrixGraph::getNeighbors(size_t edgeIndex) -> std::vector<size_t> {
     std::vector<size_t> neighbors;
 
     if (this->nodeExists(edgeIndex)) {
@@ -61,13 +57,11 @@ std::vector<size_t> MatrixGraph::getNeighbors(size_t edgeIndex)
     return neighbors;
 }
 
-std::string MatrixGraph::getTypeName()
-{
+auto MatrixGraph::getTypeName() -> std::string {
     return std::string("Matrix");
 }
 
-void MatrixGraph::printToStream(std::ostream &stream)
-{
+auto MatrixGraph::printToStream(std::ostream& stream) -> void {
     stream << "\t";
     for (size_t i = 0; i < this->adjacencyMatrix.size(); i++) {
         stream << this->labels.at(i) << "\t";
@@ -82,4 +76,20 @@ void MatrixGraph::printToStream(std::ostream &stream)
         }
         stream << std::endl;
     }
+}
+
+auto MatrixGraph::readFromStream(std::istream& stream) -> Graph* {
+    size_t numNodes = 0, numEdges = 0, oriented = 0, weighted = 0;
+    stream >> numNodes >> numEdges >> oriented >> weighted;
+
+    Graph* g = new MatrixGraph(oriented, weighted);
+    Graph::fillFromStream(g, stream, numNodes, numEdges, weighted);
+
+    return g;
+}
+
+auto MatrixGraph::readFromFile(std::string const& filename) -> Graph* {
+    std::ifstream file(filename);
+
+    return MatrixGraph::readFromStream(file);
 }

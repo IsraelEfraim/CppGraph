@@ -2,6 +2,7 @@
 #define GRAPH_HPP
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -27,6 +28,8 @@ class Graph
 
         bool nodeExists(size_t index);
 
+        static auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph*;
+
     public:
         Graph(bool oriented, bool weighted);
 
@@ -49,11 +52,11 @@ class Graph
         auto getLabelVector() -> std::vector<std::string>;
 
         virtual auto getTypeName() -> std::string = 0;
-        virtual auto printToStream(std::ostream &stream) -> void = 0;
+        virtual auto printToStream(std::ostream& stream) -> void = 0;
 
         virtual ~Graph() = 0;
 };
 
-auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph*;
+
 
 #endif // GRAPH_HPP

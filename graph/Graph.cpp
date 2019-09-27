@@ -158,7 +158,7 @@ auto Graph::getLabelVector() -> std::vector<std::string> {
 
 Graph::~Graph() = default;
 
-auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph* {
+auto Graph::fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numEdges, bool weighted) -> Graph* {
     size_t remainingNodes = numNodes,
            remainingEdges = numEdges;
 
@@ -170,6 +170,21 @@ auto fillFromStream(Graph* g, std::istream& stream, size_t numNodes, size_t numE
            g->addNode(node);
            remainingNodes--;
        }
+    }
+
+    while (stream.good() && remainingEdges > 0) {
+        double weight = 1.0;
+        size_t from, to;
+
+        stream >> from >> to;
+
+        if (weighted) {
+            stream >> weight;
+        }
+
+        if (stream.good()) {
+            g->addEdge(from, to, weight);
+        }
     }
 
     return g;

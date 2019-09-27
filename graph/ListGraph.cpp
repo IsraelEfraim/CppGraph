@@ -3,15 +3,13 @@
 ListGraph::ListGraph(bool oriented, bool weighted)
     : Graph(oriented, weighted), adjacencyList(std::vector<std::vector<AdjacencyCell>>()) {}
 
-bool ListGraph::addNode(std::string label)
-{
+auto ListGraph::addNode(std::string label) -> bool {
     this->labels.push_back(label);
     this->adjacencyList.push_back(std::vector<AdjacencyCell>());
     return true;
 }
 
-bool ListGraph::addEdge(size_t from, size_t to, double weight)
-{
+auto ListGraph::addEdge(size_t from, size_t to, double weight) -> bool {
     if (!weighted) {
         weight = 1.0;
     }
@@ -32,8 +30,7 @@ bool ListGraph::addEdge(size_t from, size_t to, double weight)
 }
 
 
-double ListGraph::getEdgeWeight(size_t from, size_t to)
-{
+auto ListGraph::getEdgeWeight(size_t from, size_t to) -> double {
     double weight = 0.0;
 
     if (this->nodeExists(from) && this->nodeExists(to)) {
@@ -48,8 +45,7 @@ double ListGraph::getEdgeWeight(size_t from, size_t to)
     return weight;
 }
 
-std::vector<size_t> ListGraph::getNeighbors(size_t edgeIndex)
-{
+auto ListGraph::getNeighbors(size_t edgeIndex) -> std::vector<size_t> {
     std::vector<size_t> neighbors;
 
     if (this->nodeExists(edgeIndex)) {
@@ -61,13 +57,11 @@ std::vector<size_t> ListGraph::getNeighbors(size_t edgeIndex)
     return neighbors;
 }
 
-std::string ListGraph::getTypeName()
-{
+auto ListGraph::getTypeName() -> std::string {
     return std::string("List");
 }
 
-void ListGraph::printToStream(std::ostream &stream)
-{
+auto ListGraph::printToStream(std::ostream& stream) -> void {
     for (size_t i = 0; i < this->adjacencyList.size(); i++) {
         std::string label = this->getNodeName(i);
         stream << label << " -> ";
@@ -78,4 +72,20 @@ void ListGraph::printToStream(std::ostream &stream)
 
         stream << std::endl;
     }
+}
+
+auto ListGraph::readFromStream(std::istream& stream) -> Graph* {
+    size_t numNodes = 0, numEdges = 0, oriented = 0, weighted = 0;
+    stream >> numNodes >> numEdges >> oriented >> weighted;
+
+    Graph* g = new ListGraph(oriented, weighted);
+    Graph::fillFromStream(g, stream, numNodes, numEdges, weighted);
+
+    return g;
+}
+
+auto ListGraph::readFromFile(std::string const& filename) -> Graph* {
+    std::ifstream file(filename);
+
+    return ListGraph::readFromStream(file);
 }

@@ -11,14 +11,17 @@ class MatrixGraph : public Graph
     public:
         MatrixGraph(bool oriented, bool weighted);
 
-        bool addNode(std::string label);
-        bool addEdge(size_t from, size_t to, double weight = 1);
+        auto addNode(std::string label) -> bool;
+        auto addEdge(size_t from, size_t to, double weight = 1) -> bool;
 
-        double getEdgeWeight(size_t from, size_t to);
-        std::vector<size_t> getNeighbors(size_t edgeIndex);
+        auto getEdgeWeight(size_t from, size_t to) -> double;
+        auto getNeighbors(size_t edgeIndex) -> std::vector<size_t>;
 
-        std::string getTypeName();
-        void printToStream(std::ostream &stream);
+        auto getTypeName() -> std::string;
+        auto printToStream(std::ostream& stream) -> void;
+
+        static auto readFromStream(std::istream& stream) -> Graph*;
+        static auto readFromFile(std::string const& filename) -> Graph*;
 };
 
 #endif // MATRIXGRAPH_HPP

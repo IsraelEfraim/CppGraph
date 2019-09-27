@@ -4,19 +4,13 @@
 #include "graph/MatrixGraph.hpp"
 #include "graph/ListGraph.hpp"
 
-#include <algorithm>
-
-#include <limits>
-
-void printGraphInformation(Graph* g)
-{
+auto printGraphInformation(Graph* g) -> void {
     std::cout << "Type:     " << g->getTypeName() << std::endl
               << "Oriented: " << g->isOriented()  << std::endl
               << "Weighted: " << g->isWeighted()  << std::endl;
 }
 
-void matrixExample()
-{
+auto matrixExample() -> void {
     Graph* g = new MatrixGraph(false, true);
     printGraphInformation(g);
 
@@ -40,8 +34,7 @@ void matrixExample()
     delete g;
 }
 
-void listExample ()
-{
+auto listExample () -> void {
     Graph* g = new ListGraph(false, true);
     printGraphInformation(g);
 
@@ -65,8 +58,7 @@ void listExample ()
     delete g;
 }
 
-void depthFirstSearch()
-{
+auto depthFirstSearch() -> void {
     Graph* g = new ListGraph(false, false);
 
     g->addNode("A");
@@ -92,8 +84,7 @@ void depthFirstSearch()
     std::cout << std::endl;
 }
 
-void breadthFirstSearch()
-{
+auto breadthFirstSearch() -> void {
     Graph* g = new ListGraph(false, false);
 
     g->addNode("A");
@@ -119,8 +110,7 @@ void breadthFirstSearch()
     std::cout << std::endl;
 }
 
-void dijkstra()
-{
+auto dijkstra() -> void {
     Graph* g = new ListGraph(false, true);
 
     g->addNode("A");
@@ -149,12 +139,13 @@ void dijkstra()
     }
 }
 
-int main()
-{
+auto main() -> int {
     //listExample();
     //matrixExample();
     //depthFirstSearch();
     //breadthFirstSearch();
     //dijkstra();
+    Graph* g = ListGraph::readFromFile("../sample/trabalho-28cores.txt");
+    g->printToStream(std::cout);
     return 0;
 }
