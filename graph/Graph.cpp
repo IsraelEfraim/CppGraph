@@ -98,39 +98,39 @@ auto Graph::breadthFirstSearch(size_t base) -> std::vector<size_t> {
     return sequence;
 }
 
-auto Graph::dijkstra(size_t base) -> std::vector<DijkstraCell> {
-    std::vector<DijkstraCell> distanceMap(this->labels.size(),
-                                          DijkstraCell(std::numeric_limits<double>::max(), 0, false));
+auto Graph::dijkstra(size_t base) -> std::vector<std::pair<double, size_t>> {
+    std::vector<std::pair<double, size_t>> distanceMap(this->labels.size(), { std::numeric_limits<double>::max(), 0 });
+    std::vector<bool> closedMap(this->labels.size(), false);
 
     if (this->nodeExists(base)) {
         size_t node = base;
-        distanceMap.at(node).distance = 0.0;
+        distanceMap.at(node).first = 0.0;
 
         bool shouldLoop = true;
         while (shouldLoop) {
             auto neighbors = this->getNeighbors(node);
 
             for (auto neighbor : neighbors) {
-                double distance = distanceMap.at(node).distance + this->getEdgeWeight(node, neighbor);
+                double distance = distanceMap.at(node).first + this->getEdgeWeight(node, neighbor);
 
-                if (distance < distanceMap.at(neighbor).distance) {
-                    distanceMap.at(neighbor).distance = distance;
-                    distanceMap.at(neighbor).predecessor = node;
+                if (distance < distanceMap.at(neighbor).first) {
+                    distanceMap.at(neighbor).first = distance;
+                    distanceMap.at(neighbor).second = node;
                 }
             }
 
-            distanceMap.at(node).closed = true;
+            closedMap.at(node) = true;
             shouldLoop = false;
 
             double smallerDistance = std::numeric_limits<double>::max();
 
             for (size_t i = 0; i < distanceMap.size(); i++) {
-                if (!distanceMap.at(i).closed && distanceMap.at(i).distance < std::numeric_limits<double>::max()) {
+                if (!closedMap.at(i) && distanceMap.at(i).first < std::numeric_limits<double>::max()) {
                     shouldLoop = true;
 
-                    if (distanceMap.at(i).distance < smallerDistance) {
+                    if (distanceMap.at(i).first < smallerDistance) {
                         node = i;
-                        smallerDistance = distanceMap.at(i).distance;
+                        smallerDistance = distanceMap.at(i).first;
                     }
                 }
             }

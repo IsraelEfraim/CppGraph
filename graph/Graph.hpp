@@ -6,19 +6,6 @@
 #include <vector>
 #include <string>
 
-class DijkstraCell
-{
-    public:
-        double distance;
-        size_t predecessor;
-        bool closed;
-
-        DijkstraCell(double distance, size_t predecessor, bool closed)
-            : distance(distance), predecessor(predecessor), closed(closed)
-        {}
-};
-
-
 class Graph
 {
     protected:
@@ -42,7 +29,7 @@ class Graph
 
         auto depthFirstSearch(size_t base) -> std::vector<size_t>;
         auto breadthFirstSearch(size_t base) -> std::vector<size_t>;
-        auto dijkstra(size_t base) -> std::vector<DijkstraCell>;
+        auto dijkstra(size_t base) -> std::vector<std::pair<double, size_t>>;
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;

@@ -132,11 +132,14 @@ auto dijkstra() -> void {
     auto dijkstraMap = g->dijkstra(0);
     for (size_t i = 0; i < dijkstraMap.size(); i++) {
         std::cout << "["  << g->getNodeName(i)
-                  << ", " << dijkstraMap.at(i).distance
-                  << ", " << g->getNodeName(dijkstraMap.at(i).predecessor)
-                  << ", " << dijkstraMap.at(i).closed
+                  << ", " << dijkstraMap.at(i).first
+                  << ", " << g->getNodeName(dijkstraMap.at(i).second)
                   << "] " << std::endl;
     }
+}
+
+auto read() -> void {
+    Graph* g = ListGraph::readFromFile("../sample/trabalho-234cores.txt");
 }
 
 auto main() -> int {
@@ -145,7 +148,6 @@ auto main() -> int {
     //depthFirstSearch();
     //breadthFirstSearch();
     //dijkstra();
-    Graph* g = ListGraph::readFromFile("../sample/trabalho-28cores.txt");
-    g->printToStream(std::cout);
+    //read();
     return 0;
 }
