@@ -168,6 +168,31 @@ auto welshPowell() -> void {
     }
 }
 
+auto dsatur() -> void {
+    std::vector<std::string> colors {"green", "blue", "yellow", "red", "purple"};
+
+    Graph* g = new ListGraph(0, 0);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+
+    g->addEdge("A-B");
+    g->addEdge("A-D");
+    g->addEdge("B-C");
+    g->addEdge("B-E");
+    g->addEdge("C-E");
+    g->addEdge("D-E");
+
+    auto colored = g->dsatur(colors);
+
+    for (size_t i = 0; i < colored.size(); i++) {
+        std::cout << g->getNodeName(i) << " " << colored.at(i) << std::endl;
+    }
+}
+
 auto main() -> int {
     //listExample();
     //matrixExample();
@@ -175,6 +200,7 @@ auto main() -> int {
     //breadthFirstSearch();
     //dijkstra();
     //read();
-    welshPowell();
+    //welshPowell();
+    dsatur();
     return 0;
 }

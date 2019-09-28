@@ -5,6 +5,9 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
+#include <tuple>
+#include <unordered_map>
+#include <map>
 #include <string>
 
 class Graph
@@ -35,7 +38,10 @@ class Graph
 
         /* Coloring */
         template <typename ColorType>
-        auto welshPowell(std::vector<ColorType> colors) -> std::vector<std::pair<size_t, ColorType>>;
+        auto welshPowell(std::vector<ColorType> const& colors) -> std::vector<std::pair<size_t, ColorType>>;
+
+        template <typename ColorType>
+        auto dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorType>;
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;
@@ -51,7 +57,7 @@ class Graph
 };
 
 template <typename ColorType>
-auto Graph::welshPowell(std::vector<ColorType> colors)-> std::vector<std::pair<size_t, ColorType>> {
+auto Graph::welshPowell(std::vector<ColorType> const& colors)-> std::vector<std::pair<size_t, ColorType>> {
     std::vector<std::pair<size_t, ColorType>> colored(this->labels.size());
 
     std::vector<bool> alreadyColored(this->labels.size(), false);
@@ -94,6 +100,87 @@ auto Graph::welshPowell(std::vector<ColorType> colors)-> std::vector<std::pair<s
         }
 
         current++;
+    }
+
+    return colored;
+}
+
+template <typename ColorType>
+auto Graph::dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorType> {
+
+    using SaturTuple = std::tuple<size_t, size_t, size_t>;
+
+    std::vector<ColorType> colored(this->labels.size());
+    std::vector<bool> alreadyColored(this->labels.size(), false);
+    std::vector<SaturTuple> saturMap;
+
+    for (size_t i = 0; i < this->labels.size(); i++) {
+        saturMap.push_back({ i, this->getNeighbors(i).size(), 0 });
+    }
+
+    std::sort(std::begin(saturMap), std::end(saturMap), [] (SaturTuple const& l, SaturTuple const& r) -> bool {
+        return std::get<1>(l) > std::get<1>(r);
+    });
+
+    size_t node = 0, countColored = 0;
+    while (countColored < saturMap.size()) {
+        ColorType available;
+        size_t curNode = std::get<0>(saturMap.at(node));
+        auto neighbors = this->getNeighbors(curNode);
+        std::map<ColorType, size_t> neighborsColors;
+
+        for (auto neighbor : neighbors) {
+            if (alreadyColored.at(neighbor)) {
+                neighborsColors[colored.at(neighbor)]++; /* TRAAAAAAAAAAAAAUNT */
+            }
+        }
+
+        for (auto color : colors) {
+            if (neighborsColors[color] == 0) {
+                available = color;
+                break;
+            }
+        }
+
+        colored.at(curNode) = available;
+        alreadyColored.at(curNode) = true;
+        countColored++;
+
+        /* The paaaact */
+        for (auto neighbor : neighbors) {
+            if (!alreadyColored.at(neighbor)) {
+                std::map<ColorType, size_t> saturation;
+
+                for (auto n : this->getNeighbors(neighbor)) {
+                    if (alreadyColored.at(n)) {
+                        saturation[colored.at(n)]++;
+                    }
+                }
+
+                for (size_t i = 0; i < saturMap.size(); i++) {
+                    if (std::get<0>(saturMap.at(i)) == neighbor) {
+                        std::get<2>(saturMap.at(i)) = saturation.size();
+                        break;
+                    }
+                }
+            }
+        }
+
+        /* Un forastero! */
+        size_t mostSaturated = 0, biggestDegree = 0;
+        for (size_t i = 0; i < saturMap.size(); i++) {
+            if (!alreadyColored.at(std::get<0>(saturMap.at(i)))) {
+                size_t curDegree = std::get<1>(saturMap.at(i)),
+                       curSaturation = std::get<2>(saturMap.at(i));
+
+                if (curSaturation > mostSaturated
+                    || (curSaturation == mostSaturated && curDegree > biggestDegree)) {
+                    node = i;
+                    biggestDegree = curDegree;
+                    mostSaturated = curSaturation;
+                }
+            }
+        }
     }
 
     return colored;
