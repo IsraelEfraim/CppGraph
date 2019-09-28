@@ -142,6 +142,32 @@ auto read() -> void {
     Graph* g = ListGraph::readFromFile("../sample/trabalho-234cores.txt");
 }
 
+auto welshPowell() -> void {
+    std::vector<std::string> colors {"green", "blue", "yellow", "red", "purple"};
+
+    Graph* g = new ListGraph(0, 0);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+
+    g->addEdge("A-B");
+    g->addEdge("A-D");
+    g->addEdge("B-C");
+    g->addEdge("B-D");
+    g->addEdge("B-E");
+    g->addEdge("C-E");
+    g->addEdge("D-E");
+
+    auto colored = g->welshPowell(colors);
+
+    for (auto color : colored) {
+        std::cout << g->getNodeName(color.first) << " " << color.second << std::endl;
+    }
+}
+
 auto main() -> int {
     //listExample();
     //matrixExample();
@@ -149,5 +175,6 @@ auto main() -> int {
     //breadthFirstSearch();
     //dijkstra();
     //read();
+    welshPowell();
     return 0;
 }
