@@ -11,5 +11,6 @@ SOURCES += \
 
 HEADERS += \
     graph/Graph.hpp \
+    graph/GraphTester.hpp \
     graph/MatrixGraph.hpp \
     graph/ListGraph.hpp

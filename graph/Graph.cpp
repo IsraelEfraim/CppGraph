@@ -148,6 +148,10 @@ auto Graph::isWeighted() -> bool {
     return this->weighted;
 }
 
+auto Graph::getNodeCount() -> size_t {
+    return this->labels.size();
+}
+
 auto Graph::getNodeName(size_t nodeIndex) -> std::string {
     return this->labels.at(nodeIndex);
 }

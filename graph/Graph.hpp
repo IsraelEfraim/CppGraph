@@ -38,13 +38,15 @@ class Graph
 
         /* Coloring */
         template <typename ColorType>
-        auto welshPowell(std::vector<ColorType> const& colors) -> std::vector<std::pair<size_t, ColorType>>;
+        auto welshPowell(std::vector<ColorType> const& colors) -> std::vector<ColorType>;
 
         template <typename ColorType>
         auto dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorType>;
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;
+
+        auto getNodeCount() -> size_t;
 
         auto getNodeIndex(std::string nodeName) -> size_t;
         auto getNodeName(size_t nodeIndex) -> std::string;
@@ -57,8 +59,8 @@ class Graph
 };
 
 template <typename ColorType>
-auto Graph::welshPowell(std::vector<ColorType> const& colors)-> std::vector<std::pair<size_t, ColorType>> {
-    std::vector<std::pair<size_t, ColorType>> colored(this->labels.size());
+auto Graph::welshPowell(std::vector<ColorType> const& colors)-> std::vector<ColorType> {
+    std::vector<ColorType> colored(this->labels.size());
 
     std::vector<bool> alreadyColored(this->labels.size(), false);
     size_t countColored = 0;
@@ -86,13 +88,13 @@ auto Graph::welshPowell(std::vector<ColorType> const& colors)-> std::vector<std:
                 size_t sameColor = 0;
 
                 for (auto neighbor : neighbors) {
-                    if (alreadyColored.at(neighbor) && colored.at(neighbor).second == color) {
+                    if (alreadyColored.at(neighbor) && colored.at(neighbor) == color) {
                         sameColor++;
                     }
                 }
 
                 if (sameColor == 0) {
-                    colored.at(node.first) = { node.first, color };
+                    colored.at(node.first) = color;
                     alreadyColored.at(node.first) = true;
                     countColored++;
                 }

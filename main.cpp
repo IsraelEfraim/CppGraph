@@ -3,6 +3,7 @@
 #include "graph/Graph.hpp"
 #include "graph/MatrixGraph.hpp"
 #include "graph/ListGraph.hpp"
+#include "graph/GraphTester.hpp"
 
 auto printGraphInformation(Graph* g) -> void {
     std::cout << "Type:     " << g->getTypeName() << std::endl
@@ -139,7 +140,8 @@ auto dijkstra() -> void {
 }
 
 auto read() -> void {
-    Graph* g = ListGraph::readFromFile("../sample/trabalho-234cores.txt");
+    Graph* g = ListGraph::readFromFile("../../sample/trabalho-28cores.txt");
+    printGraphInformation(g);
 }
 
 auto welshPowell() -> void {
@@ -164,7 +166,7 @@ auto welshPowell() -> void {
     auto colored = g->welshPowell(colors);
 
     for (auto color : colored) {
-        std::cout << g->getNodeName(color.first) << " " << color.second << std::endl;
+        std::cout << color << std::endl;
     }
 }
 
@@ -193,6 +195,22 @@ auto dsatur() -> void {
     }
 }
 
+auto runEfficiencyTest(std::string filename) -> void {
+    std::ofstream file(filename);
+
+    /* Ideally 28 color graph */
+    auto _28 = Tester::multipleColoringTest("../../sample/trabalho-28cores.txt", file);
+
+    /* Ideally 65 color graph (sparser) */
+    auto _65a = Tester::multipleColoringTest("../../sample/trabalho-65cores1.txt", file);
+
+    /* Ideally 65 color graph (less sparse) */
+    auto _65b = Tester::multipleColoringTest("../../sample/trabalho-65cores2.txt", file);
+
+    /* Ideally 234 color graph */
+    auto _234 = Tester::multipleColoringTest("../../sample/trabalho-234cores.txt", file);
+}
+
 auto main() -> int {
     //listExample();
     //matrixExample();
@@ -201,6 +219,11 @@ auto main() -> int {
     //dijkstra();
     //read();
     //welshPowell();
-    dsatur();
+    //dsatur();
+    runEfficiencyTest("./test01.txt");
+    runEfficiencyTest("./test02.txt");
+    runEfficiencyTest("./test03.txt");
+    runEfficiencyTest("./test04.txt");
+
     return 0;
 }
