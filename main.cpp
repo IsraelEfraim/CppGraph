@@ -195,20 +195,11 @@ auto dsatur() -> void {
     }
 }
 
-auto runEfficiencyTest(std::string filename) -> void {
-    std::ofstream file(filename);
-
-    /* Ideally 28 color graph */
-    auto _28 = Tester::multipleColoringTest("../../sample/trabalho-28cores.txt", file);
-
-    /* Ideally 65 color graph (sparser) */
-    auto _65a = Tester::multipleColoringTest("../../sample/trabalho-65cores1.txt", file);
-
-    /* Ideally 65 color graph (less sparse) */
-    auto _65b = Tester::multipleColoringTest("../../sample/trabalho-65cores2.txt", file);
-
-    /* Ideally 234 color graph */
-    auto _234 = Tester::multipleColoringTest("../../sample/trabalho-234cores.txt", file);
+auto coloringTest() -> void {
+    Tester::Coloring::runEfficiencyTest("./test01.txt");
+    Tester::Coloring::runEfficiencyTest("./test02.txt");
+    Tester::Coloring::runEfficiencyTest("./test03.txt");
+    Tester::Coloring::runEfficiencyTest("./test04.txt");
 }
 
 auto main() -> int {
@@ -220,10 +211,6 @@ auto main() -> int {
     //read();
     //welshPowell();
     //dsatur();
-    runEfficiencyTest("./test01.txt");
-    runEfficiencyTest("./test02.txt");
-    runEfficiencyTest("./test03.txt");
-    runEfficiencyTest("./test04.txt");
-
+    //coloringTest();
     return 0;
 }

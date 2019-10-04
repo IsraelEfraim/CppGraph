@@ -29,7 +29,6 @@ auto ListGraph::addEdge(size_t from, size_t to, double weight) -> bool {
     return false;
 }
 
-
 auto ListGraph::getEdgeWeight(size_t from, size_t to) -> double {
     double weight = 0.0;
 
@@ -75,17 +74,9 @@ auto ListGraph::printToStream(std::ostream& stream) -> void {
 }
 
 auto ListGraph::readFromStream(std::istream& stream) -> Graph* {
-    size_t numNodes = 0, numEdges = 0, oriented = 0, weighted = 0;
-    stream >> numNodes >> numEdges >> oriented >> weighted;
-
-    Graph* g = new ListGraph(oriented, weighted);
-    Graph::fillFromStream(g, stream, numNodes, numEdges, weighted);
-
-    return g;
+    return Graph::readFromStream<ListGraph>(stream);
 }
 
 auto ListGraph::readFromFile(std::string const& filename) -> Graph* {
-    std::ifstream file(filename);
-
-    return ListGraph::readFromStream(file);
+    return Graph::readFromFile<ListGraph>(filename);
 }

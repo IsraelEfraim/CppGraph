@@ -14,14 +14,7 @@ namespace Tester {
         return new GraphType(oriented, weighted);
     }
 
-    template <typename ColorType>
-    auto countUniqueColors(std::vector<ColorType>& colors) -> size_t {
-        std::sort(std::begin(colors), std::end(colors));
-        auto leftover = std::unique(std::begin(colors), std::end(colors));
-        colors.erase(leftover, std::end(colors));
-
-        return colors.size();
-    }
+    using Sample = std::pair<double, size_t>;
 
     template <typename Fn, typename Arg>
     auto execute(Fn algorithm, std::vector<Arg> arg) -> std::pair<std::chrono::duration<double>, std::vector<Arg>> {
@@ -32,43 +25,70 @@ namespace Tester {
         return std::make_pair(elapsed, solution);
     }
 
-    using Sample = std::pair<double, size_t>;
+    namespace Coloring {
 
-    template <typename Fn>
-    auto coloringAlgorithms(Fn reader, std::string filename) -> std::pair<Sample, Sample> {
-        Graph* g = reader(filename);
+        template <typename ColorType>
+        auto countUniqueColors(std::vector<ColorType>& colors) -> size_t {
+            std::sort(std::begin(colors), std::end(colors));
+            auto leftover = std::unique(std::begin(colors), std::end(colors));
+            colors.erase(leftover, std::end(colors));
 
-        std::vector<int> colors(g->getNodeCount());
-        std::iota(std::begin(colors), std::end(colors), 0);
+            return colors.size();
+        }
 
-        auto wp = execute([&g](std::vector<int> const& arg) -> std::vector<int> {
-            return g->welshPowell(arg);
-        }, colors);
+        template <typename Fn>
+        auto coloringAlgorithms(Fn reader, std::string filename) -> std::pair<Sample, Sample> {
+            Graph* g = reader(filename);
 
-        auto wpTotal = countUniqueColors(wp.second);
+            std::vector<int> colors(g->getNodeCount());
+            std::iota(std::begin(colors), std::end(colors), 0);
 
-        auto ds = execute([&g](std::vector<int> const& arg) -> std::vector<int> {
-            return g->dsatur(arg);
-        }, colors);
+            auto wp = execute([&g](std::vector<int> const& arg) -> std::vector<int> {
+                return g->welshPowell(arg);
+            }, colors);
 
-        auto dsTotal = countUniqueColors(ds.second);
+            auto wpTotal = countUniqueColors(wp.second);
 
-        return {
-            { wp.first.count(), wpTotal }, { ds.first.count(), dsTotal }
-        };
-    }
+            auto ds = execute([&g](std::vector<int> const& arg) -> std::vector<int> {
+                return g->dsatur(arg);
+            }, colors);
 
-    auto multipleColoringTest(std::string filename, std::ostream& os) -> std::vector<std::pair<Sample, Sample>> {
-        auto list = coloringAlgorithms(ListGraph::readFromFile, filename);
-        auto matrix = coloringAlgorithms(MatrixGraph::readFromFile, filename);
+            auto dsTotal = countUniqueColors(ds.second);
 
-        os << list.first.first << " " << list.first.second << std::endl
-           << list.second.first << " " << list.second.second << std::endl
-           << matrix.first.first << " " << matrix.first.second << std::endl
-           << matrix.second.first << " " << matrix.second.second << std::endl << std::endl;
+            return {
+                { wp.first.count(), wpTotal }, { ds.first.count(), dsTotal }
+            };
+        }
 
-        return { list, matrix };
-    }
+        auto multipleColoringTest(std::string filename, std::ostream& os) -> std::vector<std::pair<Sample, Sample>> {
+            auto list = coloringAlgorithms(ListGraph::readFromFile, filename);
+            auto matrix = coloringAlgorithms(MatrixGraph::readFromFile, filename);
+
+            os << list.first.first << " " << list.first.second << std::endl
+               << list.second.first << " " << list.second.second << std::endl
+               << matrix.first.first << " " << matrix.first.second << std::endl
+               << matrix.second.first << " " << matrix.second.second << std::endl << std::endl;
+
+            return { list, matrix };
+        }
+
+        auto runEfficiencyTest(std::string filename) -> void {
+            std::ofstream file(filename);
+
+            /* Ideally 28 color graph */
+            auto _28 = multipleColoringTest("../../sample/trabalho-28cores.txt", file);
+
+            /* Ideally 65 color graph (sparser) */
+            auto _65a = multipleColoringTest("../../sample/trabalho-65cores1.txt", file);
+
+            /* Ideally 65 color graph (less sparse) */
+            auto _65b = multipleColoringTest("../../sample/trabalho-65cores2.txt", file);
+
+            /* Ideally 234 color graph */
+            auto _234 = multipleColoringTest("../../sample/trabalho-234cores.txt", file);
+        }
+
+    } // namespace Coloring
 }
 
 #endif // GRAPHTESTER_HPP

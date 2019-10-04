@@ -79,17 +79,9 @@ auto MatrixGraph::printToStream(std::ostream& stream) -> void {
 }
 
 auto MatrixGraph::readFromStream(std::istream& stream) -> Graph* {
-    size_t numNodes = 0, numEdges = 0, oriented = 0, weighted = 0;
-    stream >> numNodes >> numEdges >> oriented >> weighted;
-
-    Graph* g = new MatrixGraph(oriented, weighted);
-    Graph::fillFromStream(g, stream, numNodes, numEdges, weighted);
-
-    return g;
+    return Graph::readFromStream<MatrixGraph>(stream);
 }
 
 auto MatrixGraph::readFromFile(std::string const& filename) -> Graph* {
-    std::ifstream file(filename);
-
-    return MatrixGraph::readFromStream(file);
+    return Graph::readFromFile<MatrixGraph>(filename);
 }
