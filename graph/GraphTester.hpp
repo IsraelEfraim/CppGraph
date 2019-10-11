@@ -6,7 +6,6 @@
 #include "MatrixGraph.hpp"
 #include <chrono>
 #include <functional>
-#include <numeric>
 
 namespace Tester {
     template <typename GraphType>

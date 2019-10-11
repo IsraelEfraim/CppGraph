@@ -140,6 +140,36 @@ auto Graph::dijkstra(size_t base) -> std::vector<std::pair<double, size_t>> {
     return distanceMap;
 }
 
+auto Graph::prim(size_t base) -> std::vector<Edge> {
+    std::vector<Edge> solution;
+    std::vector<bool> control(this->labels.size(), true);
+
+    control.at(base) = false;
+
+    size_t controlCount = control.size() - 1;
+    while (controlCount > 0) {
+        Edge min{ 0, 0, std::numeric_limits<double>::max() };
+
+        for (size_t u = 0; u < control.size(); u++) {
+            for (size_t v = 0; v < control.size(); v++) {
+                if (control.at(u) ^ control.at(v)) {
+                    double weight = this->getEdgeWeight(u, v);
+                    if (weight != 0.0 && weight < min.weight) {
+                        min = { u, v, weight };
+                    }
+                }
+            }
+        }
+        solution.push_back(min);
+
+        control.at(min.from) = false;
+        control.at(min.to) = false;
+        controlCount--;
+    }
+
+    return solution;
+}
+
 auto Graph::isOriented() -> bool {
     return this->oriented;
 }

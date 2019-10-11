@@ -208,6 +208,36 @@ auto coloringTest() -> void {
     Tester::Coloring::runEfficiencyTest("./test04.txt");
 }
 
+auto prim() -> void {
+    Graph* g = new MatrixGraph(false, true);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+    g->addNode("F");
+
+    g->addEdge("A-C", 7);
+    g->addEdge("A-D", 2);
+    g->addEdge("A-E", 10);
+    g->addEdge("B-C", 3);
+    g->addEdge("B-F", 2);
+    g->addEdge("C-E", 9);
+    g->addEdge("C-F", 3);
+    g->addEdge("D-E", 7);
+    g->addEdge("D-F", 4);
+    g->addEdge("E-F", 8);
+
+    auto mst = g->prim(2);
+
+    for (auto edge : mst) {
+        std::cout << g->getNodeName(edge.from) << g->getNodeName(edge.to) << " ";
+    }
+
+    std::cout << std::endl;
+}
+
 auto main() -> int {
     //listExample();
     //matrixExample();
@@ -218,5 +248,6 @@ auto main() -> int {
     //welshPowell();
     //dsatur();
     //coloringTest();
+    prim();
     return 0;
 }

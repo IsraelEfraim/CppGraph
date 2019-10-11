@@ -8,9 +8,16 @@
 #include <tuple>
 #include <map>
 #include <string>
+#include <numeric>
+
+struct Edge {
+    size_t from;
+    size_t to;
+    double weight;
+};
 
 class Graph
-{
+{   
     protected:
         std::vector<std::string> labels;
         bool oriented;
@@ -39,6 +46,11 @@ class Graph
 
         template <typename ColorType>
         auto dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorType>;
+
+        /* Spanning Tree */
+        auto prim(size_t base = 0) -> std::vector<Edge>;
+
+        auto kruskal(size_t base = 0) -> std::vector<Edge>;
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;
@@ -236,15 +248,13 @@ auto Graph::dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorTyp
         }
 
         /* Set the next node to be colored as the one with biggest saturation and degree */
-        size_t mostSaturated = 0, biggestDegree = 0;
+        size_t mostSaturated = 0;
         for (size_t i = 0; i < saturMap.size(); i++) {
             if (!alreadyColored.at(std::get<0>(saturMap.at(i)))) {
-                size_t curDegree = std::get<1>(saturMap.at(i)),
-                       curSaturation = std::get<2>(saturMap.at(i));
+                size_t curSaturation = std::get<2>(saturMap.at(i));
 
                 if (curSaturation > mostSaturated) {
                     node = i;
-                    biggestDegree = curDegree;
                     mostSaturated = curSaturation;
                 }
             }
