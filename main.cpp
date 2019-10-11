@@ -142,6 +142,8 @@ auto dijkstra() -> void {
 auto read() -> void {
     Graph* g = ListGraph::readFromFile("../../sample/trabalho-28cores.txt");
     printGraphInformation(g);
+
+    delete g;
 }
 
 auto welshPowell() -> void {
@@ -168,6 +170,8 @@ auto welshPowell() -> void {
     for (auto color : colored) {
         std::cout << color << std::endl;
     }
+
+    delete g;
 }
 
 auto dsatur() -> void {
@@ -193,6 +197,8 @@ auto dsatur() -> void {
     for (size_t i = 0; i < colored.size(); i++) {
         std::cout << g->getNodeName(i) << " " << colored.at(i) << std::endl;
     }
+
+    delete g;
 }
 
 auto coloringTest() -> void {

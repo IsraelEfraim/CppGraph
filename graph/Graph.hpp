@@ -42,7 +42,6 @@ class Graph
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;
-
         auto getNodeCount() -> size_t;
 
         auto getNodeIndex(std::string nodeName) -> size_t;
@@ -243,8 +242,7 @@ auto Graph::dsatur(std::vector<ColorType> const& colors) -> std::vector<ColorTyp
                 size_t curDegree = std::get<1>(saturMap.at(i)),
                        curSaturation = std::get<2>(saturMap.at(i));
 
-                if (curSaturation > mostSaturated
-                    || (curSaturation == mostSaturated && curDegree > biggestDegree)) {
+                if (curSaturation > mostSaturated) {
                     node = i;
                     biggestDegree = curDegree;
                     mostSaturated = curSaturation;

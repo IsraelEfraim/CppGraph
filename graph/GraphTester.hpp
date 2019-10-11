@@ -55,6 +55,8 @@ namespace Tester {
 
             auto dsTotal = countUniqueColors(ds.second);
 
+            delete g;
+
             return {
                 { wp.first.count(), wpTotal }, { ds.first.count(), dsTotal }
             };
