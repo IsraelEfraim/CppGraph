@@ -231,11 +231,15 @@ auto prim() -> void {
 
     auto mst = g->prim(2);
 
+    double sum = 0.0;
     for (auto edge : mst) {
         std::cout << g->getNodeName(edge.from) << g->getNodeName(edge.to) << " ";
+        sum += g->getEdgeWeight(edge.from, edge.to);
     }
+    std::cout << std::endl << std::endl;
 
-    std::cout << std::endl;
+    //double hm = std::accumulate(std::begin(mst)->weight, std::end(mst)->weight, 0.0);
+    std::cout << "Total weight = " << sum << std::endl;
 }
 
 auto main() -> int {
