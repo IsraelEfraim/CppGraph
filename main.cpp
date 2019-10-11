@@ -234,12 +234,44 @@ auto prim() -> void {
     double sum = 0.0;
     for (auto edge : mst) {
         std::cout << g->getNodeName(edge.from) << g->getNodeName(edge.to) << " ";
-        sum += g->getEdgeWeight(edge.from, edge.to);
+        sum += edge.weight;
     }
-    std::cout << std::endl << std::endl;
 
-    //double hm = std::accumulate(std::begin(mst)->weight, std::end(mst)->weight, 0.0);
-    std::cout << "Total weight = " << sum << std::endl;
+    std::cout << std::endl << std::endl
+              << "Total weight = " << sum << std::endl;
+}
+
+auto kruskal() -> void {
+    Graph* g = new MatrixGraph(false, true);
+
+    g->addNode("A");
+    g->addNode("B");
+    g->addNode("C");
+    g->addNode("D");
+    g->addNode("E");
+    g->addNode("F");
+
+    g->addEdge("A-C", 7);
+    g->addEdge("A-D", 2);
+    g->addEdge("A-E", 10);
+    g->addEdge("B-C", 3);
+    g->addEdge("B-F", 2);
+    g->addEdge("C-E", 9);
+    g->addEdge("C-F", 3);
+    g->addEdge("D-E", 7);
+    g->addEdge("D-F", 4);
+    g->addEdge("E-F", 8);
+
+    auto mst = g->kruskal();
+
+    double sum = 0.0;
+    for (auto edge : mst) {
+        std::cout << g->getNodeName(edge.from) << g->getNodeName(edge.to) << " ";
+        sum += edge.weight;
+    }
+
+    std::cout << std::endl << std::endl
+              << "Total weight = " << sum << std::endl;
 }
 
 auto main() -> int {
@@ -253,5 +285,6 @@ auto main() -> int {
     //dsatur();
     //coloringTest();
     prim();
+    kruskal();
     return 0;
 }

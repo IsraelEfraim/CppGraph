@@ -170,6 +170,57 @@ auto Graph::prim(size_t base) -> std::vector<Edge> {
     return solution;
 }
 
+auto Graph::kruskal() -> std::vector<Edge> {
+    std::vector<Edge> solution;
+
+    std::map<std::pair<size_t, size_t>, double> control;
+    std::vector<std::vector<size_t>> forest;
+
+    for (size_t u = 0; u < this->labels.size(); u++) {
+        for (size_t v : this->getNeighbors(u)) {
+            if (this->isOriented() || control.find({v, u}) == std::end(control)) {
+                control[{u, v}] = this->getEdgeWeight(u, v);
+            }
+        }
+        forest.push_back(std::vector<size_t>{ u });
+    }
+
+    while (!control.empty() && forest.size() > 1) {
+        Edge min { 0, 0, std::numeric_limits<double>::max() };
+
+        for (auto const& edge : control) {
+            if (edge.second < min.weight) {
+                min = { edge.first.first, edge.first.second, edge.second };
+            }
+        }
+
+        control.erase({ min.from, min.to });
+
+        size_t uTree = 0, vTree = 0;
+
+        for (size_t i = 0; i < forest.size(); i++) {
+            if (std::find(std::begin(forest.at(i)), std::end(forest.at(i)), min.from) != std::end(forest.at(i))) {
+                uTree = i;
+            }
+            if (std::find(std::begin(forest.at(i)), std::end(forest.at(i)), min.to) != std::end(forest.at(i))) {
+                vTree = i;
+            }
+        }
+
+        if (uTree != vTree) {
+            solution.push_back(min);
+
+            for (auto node : forest.at(vTree)) {
+                forest.at(uTree).push_back(node);
+            }
+
+            forest.erase(std::begin(forest) + static_cast<long>(vTree));
+        }
+    }
+
+    return solution;
+}
+
 auto Graph::isOriented() -> bool {
     return this->oriented;
 }

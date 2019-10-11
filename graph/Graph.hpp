@@ -16,6 +16,13 @@ struct Edge {
     double weight;
 };
 
+template <bool oriented>
+struct EdgeComparator {
+    bool operator()(Edge const& l, Edge const& r) const {
+        return false; /* dont use this yet */
+    }
+};
+
 class Graph
 {   
     protected:
@@ -49,8 +56,7 @@ class Graph
 
         /* Spanning Tree */
         auto prim(size_t base = 0) -> std::vector<Edge>;
-
-        auto kruskal(size_t base = 0) -> std::vector<Edge>;
+        auto kruskal() -> std::vector<Edge>;
 
         auto isOriented() -> bool;
         auto isWeighted() -> bool;
