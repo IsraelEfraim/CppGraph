@@ -202,10 +202,10 @@ auto dsatur() -> void {
 }
 
 auto coloringTest() -> void {
-    Tester::Coloring::runEfficiencyTest("./test01.txt");
-    Tester::Coloring::runEfficiencyTest("./test02.txt");
-    Tester::Coloring::runEfficiencyTest("./test03.txt");
-    Tester::Coloring::runEfficiencyTest("./test04.txt");
+    Tester::Coloring::runEfficiencyTest("../test-output/mst/test01.txt");
+    Tester::Coloring::runEfficiencyTest("../test-output/mst/test02.txt");
+    Tester::Coloring::runEfficiencyTest("../test-output/mst/test03.txt");
+    Tester::Coloring::runEfficiencyTest("../test-output/mst/test04.txt");
 }
 
 auto prim() -> void {
@@ -274,6 +274,14 @@ auto kruskal() -> void {
               << "Total weight = " << sum << std::endl;
 }
 
+auto mstTest() -> void {
+    Tester::Mst::runEfficiencyTest("../test-output/mst/test01.txt");
+    Tester::Mst::runEfficiencyTest("../test-output/mst/test02.txt");
+    Tester::Mst::runEfficiencyTest("../test-output/mst/test03.txt");
+    Tester::Mst::runEfficiencyTest("../test-output/mst/test04.txt");
+    Tester::Mst::runEfficiencyTest("../test-output/mst/test05.txt");
+}
+
 auto main() -> int {
     //listExample();
     //matrixExample();
@@ -284,7 +292,8 @@ auto main() -> int {
     //welshPowell();
     //dsatur();
     //coloringTest();
-    prim();
-    kruskal();
+    //prim();
+    //kruskal();
+    mstTest();
     return 0;
 }
