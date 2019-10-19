@@ -1,0 +1,42 @@
+../sample/GrafosMST/50vertices25%Arestas.txt
+0.0341377 5339
+0.00130964 5339
+0.0219103 5339
+0.00130809 5339
+
+../sample/GrafosMST/50vertices50%Arestas.txt
+0.0416536 2819
+0.00253052 2819
+0.0229256 2819
+0.00242975 2819
+
+../sample/GrafosMST/50vertices100%Arestas.txt
+0.0479957 923
+0.00559853 923
+0.0217254 923
+0.00464856 923
+
+../sample/GrafosMST/500vertices25%Arestas.txt
+128.093 5129
+1.82574 5129
+21.9062 5129
+1.73246 5129
+
+../sample/GrafosMST/500vertices50%Arestas.txt
+201.509 2654
+3.32583 2654
+21.9728 2654
+3.27079 2654
+
+../sample/GrafosMST/500vertices25%Arestas.txt
+128.154 5129
+1.75659 5129
+21.9209 5129
+1.67867 5129
+
+../sample/GrafosMST/1000vertices25%Arestas.txt
+1851.18 5197
+18.2585 5197
+175.631 5197
+18.0323 5197
+
