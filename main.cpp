@@ -294,6 +294,6 @@ auto main() -> int {
     //coloringTest();
     //prim();
     //kruskal();
-    mstTest();
+    //mstTest();
     return 0;
 }

@@ -153,7 +153,7 @@ namespace Tester {
 
             auto _v500e25 = multipleMstTest("../sample/GrafosMST/500vertices25%Arestas.txt", file);
             auto _v500e50 = multipleMstTest("../sample/GrafosMST/500vertices50%Arestas.txt", file);
-            auto _v500e100 = multipleMstTest("../sample/GrafosMST/500vertices25%Arestas.txt", file);
+            auto _v500e100 = multipleMstTest("../sample/GrafosMST/500vertices100%Arestas.txt", file);
 
             auto _v1000e25 = multipleMstTest("../sample/GrafosMST/1000vertices25%Arestas.txt", file);
         }
